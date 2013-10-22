@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name="db.php" server="on-lingua.org//" local="130149438043319604" remote="130149454800000000" Dst="2" />
+<file name="tag.php" server="on-lingua.org//" local="130149438181157487" remote="130149454800000000" Dst="2" />
+<file name="getProjects.php" server="on-lingua.org//" local="130149438066200912" remote="130149454800000000" Dst="2" />
+<file name="admin.php" server="on-lingua.org//" local="130149438034759114" remote="130150231200000000" Dst="2" />
+<file name="getCards.php" server="on-lingua.org//" local="130149438050840034" remote="130150231200000000" Dst="2" />
+<file name="getOptions.php" server="on-lingua.org//" local="130149438058660481" remote="130150231200000000" Dst="2" />
+<file name="getWords.php" server="on-lingua.org//" local="130149438074061362" remote="130150231200000000" Dst="2" />
+<file name="insertFC.php" server="on-lingua.org//" local="130149438081601793" remote="130150231200000000" Dst="2" />
+<file name="insertProject.php" server="on-lingua.org//" local="130149438089642253" remote="130150231200000000" Dst="2" />
+<file name="language.php" server="on-lingua.org//" local="130149438097492702" remote="130150231200000000" Dst="2" />
+<file name="logout.php" server="on-lingua.org//" local="130149438105423156" remote="130150231200000000" Dst="2" />
+<file name="manageCards.php" server="on-lingua.org//" local="130149438112943586" remote="130150231200000000" Dst="2" />
+<file name="project.php" server="on-lingua.org//" local="130149438120754033" remote="130150231200000000" Dst="2" />
+<file name="register.php" server="on-lingua.org//" local="130149438128614482" remote="130150231200000000" Dst="2" />
+<file name="secure_hash.class.php" server="on-lingua.org//" local="130149438137785007" remote="130150231200000000" Dst="2" />
+<file name="secure_hash.example.php" server="on-lingua.org//" local="130149438145515449" remote="130150231200000000" Dst="2" />
+<file name="setRankCard.php" server="on-lingua.org//" local="130149438153195888" remote="130150231200000000" Dst="2" />
+<file name="study.php" server="on-lingua.org//" local="130149438160946331" remote="130150231200000000" Dst="2" />
+<file name="tags.php" server="on-lingua.org//" local="130149438189597970" remote="130150231200000000" Dst="2" />
+<file name="test.php" server="on-lingua.org//" local="130149438198028452" remote="130150231800000000" Dst="2" />
+<file name="validate.php" server="on-lingua.org//" local="130149438205738893" remote="130150231800000000" Dst="2" />
+<file name="lang.php" server="on-lingua.org//" local="130153573298539216" remote="130153573200000000" Dst="2" />
+<file name="english.json" server="on-lingua.org//" local="130151217155850802" remote="130151217000000000" Dst="2" />
+</dwsync>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/main.css" rel="stylesheet" type="text/css"/>  
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+    
+    <!--   - tagThat's base CSS (tagThat.css). -->
+    <link href="css/tagThat.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="http://lexicon.on-lingua.org/favicon.png" />
+    
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    
+    <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+    
+    <!-- Other plug-ins & useful tools -->
+    <script src="js/util.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/tagThat.js"></script>
+    
+    <script src="js/project.js"></script>
+    <script src="js/study.js"></script>
+    <script src="js/card.js"></script>
+    
+    <!--EXPIRE-->
+    
+<!-- Other options 
+
+-->      
+</head>
+<body>
+<!-- Inicio del estudio -->
+<div data-role="page" id="home">
+    <div data-role="header">
+	    <a id="back" href="/lexicon/" data-role="button" data-icon="back" data-ajax="false" data-transition="flip">__Back__</a>
+        <div id="lang"><select name="options-lang" id="options-lang" data-native-menu="false" data-theme="c" class="ui-btn-left" data-mini="true" data-iconpos="left">                        
+            <option>__Language__</option>
+            <!-- Language -->
+        </select></div>
+        <h1>__Project__: {{title}}</h1>                	
+        <a href="php/logout.php" class="ui-btn-right" data-ajax="false" data-theme="r" data-role="button" data-icon="delete" title="Logout" data-iconpos="right">__Logout__</a>          
+    </div>
+    <div data-role="content" id="contenido">
+    	<div id="project-chart-cards"></div>
+
+        <div id="project-description" class="center"><h2 class="description"></h2></div>
+        <div data-role="collapsible" id="project-description-entry" data-theme="b" data-content-theme="b">
+            <h3>__Add_description__</h3>
+            <textarea id="project-description-entry-text"></textarea>
+            <button id="project-description-entry-button" data-icon="check">__Done__</button>
+        </div>
+
+        <div data-role="collapsible-set" data-theme="c" data-content-theme="d">
+            <div data-role="collapsible">
+                <h3>__Options__</h3>
+                <ul data-role="listview" data-inset="true" >
+                	<li data-role="fieldcontain">
+                    	<label for="random-options-slider-flip">__Shuffle_flashcards__</label>
+						<select name="random-options-slider-flip" id="random-options-slider-flip" data-role="slider" data-mini="true">
+					    	<option value="off" selected="">__No__</option>
+					    	<option value="on">__Yes__</option>
+						</select>
+                    </li>
+                    <li data-role="fieldcontain">
+                    	<label for="invert-qa-slider-flip">__Swap_flashcards__</label>
+						<select name="invert-qa-slider-flip" id="invert-qa-slider-flip" data-role="slider" data-mini="true">
+						    <option value="off" selected="">__No__</option>
+						    <option value="on">__Yes__</option>
+						</select>
+					</li>   
+					<li data-role="fieldcontain">
+                        <label for="write-answer-slider">__Write_Answer__</label>
+                        <select name="write-answer-slider" id="write-answer-slider" data-role="slider" data-mini="true">
+                            <option value="off" selected="">__No__</option>
+                            <option value="on">__Yes__</option>
+                        </select>
+                    </li>        
+                </ul>
+        </div>
+		</div>
+		<div data-role="controlgroup" class="project-main-controlgroup">
+		    <a href="#study-session-init" data-role="button" id="start-study-btn" data-icon="lightning">__Study__</a>     
+            <a href="" data-role="button" id="cards" data-ajax="false" data-icon="edit">__Card_Manager__</a>
+            <a href="#project-reset-confirm" id="project-reset" data-role="button" data-icon="back" data-rel="dialog">__Reset_flashcard_ranks__</a>
+        </div>
+    </div>    
+</div>
+
+<!-- Opciones de un estudio -->
+<div id="study-session-init" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Starting_Session__</h2>
+        <a href="#project-home" data-rel="back" data-icon="back">__Back__</a>
+        <a href="#home" data-icon="home">__Home__</a>
+    </div>       
+    
+    <div data-role="content">
+        
+        <div data-role="fieldcontain">
+            <label for="study-mode">__MSG_Study_1__</label>
+            <select id="study-mode" name="study-mode" data-native-menu="false">
+                <option value="normal">__Option_Study_1__ </option>
+                <option value="cram">__Option_Study_2__ </option>
+                <option value="perfection" id="study-mode-perfection">__Option_Study_3__</option>
+            </select>
+        </div>
+        
+        <div data-role="fieldcontain">
+            <label for="study-response">__MSG_Study_2__ </label>
+            <select id="study-response" name="study-response" data-native-menu="false">
+                <option value="normal">__Options_Study_4__ </option>
+                <option value="jeopardy">__Options_Study_5__ </option>
+                <option value="random">__Options_Study_6__ </option>
+            </select>    
+        </div>   
+        
+        <form>
+            <a href="#study-main" id="study-session-start" data-role="button" data-icon="lightning" data-theme="b">__Start__</a>
+            <a href="#project-home" data-role="button" data-rel="_back" data-icon="back">__Cancel__</a>
+        </form>
+    </div>
+</div>
+
+<!-- Muestra cada tarjeta -->
+
+<div id="study-main" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2 id="study-progress-counter">__Studying__</h2>
+        <a href="#study-session-end" id="study-quit" data-icon="delete">__Quit__</a>
+        <a href="#" id="study-skip" data-icon="forward">__Skip__</a>
+    </div>       
+    
+    <div data-role="content">
+        <div id="study-image-div"><img id="study-image" class="flashcard-image" /></div>
+        <div id="study-textarea-question" class="study-text"><h1></h1></div>
+        
+        <div class="line ui-btn-up-c"></div>
+        <div id="flip-card"><a data-role="button" data-icon="refresh" data-theme="b" class="ui-corner-all" data-iconpos="top" data-mini="true">__Flip__</a></div>
+        <div id="study-textarea-answer" class="study-text"><h1></h1></div>
+        <div id="study-answer-text">
+            <input type="text" id="study-input-answer" placeholder="__Enter_Answer__"/>
+            <input type="submit" id="study-input-answer-submit" value="__Done__"/>
+            <h3></h3>
+        </div>
+        <div id="study-textarea-input-answer"><h2 class="right_answer_title">__Right_Answer__: &nbsp;</h2><h1 class="right_answer"></h1></div>        
+    </div>
+    <div data-role="footer" data-position="fixed">
+            <div class="study-main-input" data-role="navbar">
+                <ul>
+                    <li><a class="study-result-no" data-icon="delete" data-theme="e" class="ui-corner-right">
+                    __Don't_know__  </a></li>                               
+                    <li><a class="study-result-sort" data-icon="minus" data-theme="c">
+                    __Sort_of__ </a></li>
+                </ul>
+            </div>
+            <div class="study-main-answer" data-role="navbar" data-iconpos="top">                
+                <ul>
+                	<li><a class="study-result-no" data-icon="delete" data-theme="e" class="ui-corner-right">
+                    __Don't_know__  </a></li>                               
+                	<li><a class="study-result-sort" data-icon="minus" data-theme="c">
+                    __Sort_of__ </a></li>
+             		<li><a class="study-result-yes" data-icon="check" data-theme="b" class="ui-corner-left">
+                    __Know_it__ </a></li>
+                </ul>                 
+            </div>     
+	</div>       
+</div>
+
+<!-- Finalización -->
+
+<div id="study-session-end" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Result_study__</h2>
+        <a href="logout.php" class="ui-btn-right" data-ajax="false" data-theme="r" data-role="button" data-icon="delete" title="Logout" data-iconpos="right">__Logout__</a>
+    </div>       
+    <div data-role="content">
+        <ul data-role="listview" data-inset="true" data-count-theme="c">
+            <li>
+                <img class="ui-icon-check ui-icon ui-li-icon">
+                __Knew_it__
+                <span class="ui-li-count" id="result-yes-count"></span>
+            </li>
+            <li>
+                <img class="ui-icon-minus ui-icon ui-li-icon">
+                __Sort_of__
+                <span class="ui-li-count" id="result-sort-count"></span>
+            </li>
+            <li>
+                <img class="ui-icon-delete ui-icon ui-li-icon">
+                __Didn't_know__
+                <span class="ui-li-count" id="result-no-count"></span>
+            </li>                 
+            <li>
+                <img class="ui-icon-forward ui-icon ui-li-icon">
+                __Skipped__
+                <span class="ui-li-count" id="result-skipped-count"></span>
+            </li>       
+            <li data-theme="a">
+                <img class="ui-icon-plus ui-icon ui-li-icon">
+                __Total__
+                <span class="ui-li-count" id="result-total-count"></span>
+            </li>            
+        </ul>
+        
+        <a href="#home" data-role="button" data-icon="check" data-theme="b">__Done__</a>
+        <a id="study-again" data-role="button" data-icon="refresh">__Study_Again__</a>
+    </div>
+</div>
+
+<!-- Dialogs -->
+<div data-role="dialog" id="project-reset-confirm">
+    <div data-role="header">
+        <h3>__Reset_flashcard_ranks__</h3>
+    </div>
+    <div data-role="content">
+       <p>__MSG_Reset_flashcards__</p>
+       <a href="#home" id="reset-ranks" data-role="button">__Done__</a>
+    </div>        
+</div>
+<!-- Templates -->
+
+<div id="templates" data-role="page">
+	<li id="template-project" data-role="listitem">
+    	<a href="" class="project-study" data-transition="fade">
+        <h2 class="project-name"></h2>
+        <p class="project-description"></p>
+        <span class="ui-li-count"></span></a>
+        <a class="edit" href="#dialog-options" data-rel="dialog" data-transition="pop">__Edit__</a>
+    </li>
+    <li id="template-project-tags" data-role="listitem">
+    	<a href="" class="project-study" data-transition="fade">
+        <h2 class="project-name"></h2>       
+        <p class="project-description"></p>
+        <span class='project-tag-title'>tags:</span>
+        <p class="project-tag"></p>
+        <span class="ui-li-count"></span></a>
+        <a class="edit" href="#dialog-options" data-rel="dialog" data-transition="pop" data-icon="gear">__Edit__</a>
+    </li>
+    <li id="template-card" data-role="listitem">
+            <a href="" class="card-manager-edit-button" data-rel="dialog">
+                <h3><div class="ui-icon ui-icon-question" style="float:left" title="Question"></div>&nbsp;
+                    <span class="card-manager-question"></span></h3>
+                <h3><div class="ui-icon ui-icon-chat" style="float:left" title="Answer"></div>&nbsp; 
+                    <span class="card-manager-answer"></span></h3>
+                <span class="ui-li-count" title=""></span>
+            </a>
+      </li>
+      <li id="template-non-project" data-role="listitem">
+        <h3 class="project-name"></h3>
+        <p class="project-description"></p>
+    </li>
+</div>
+
+<script type="text/javascript" src="js/jquery.jqplot.min.js"></script>
+<link rel="stylesheet" type="text/css" href="js/jquery.jqplot.min.css" />
+<script type="text/javascript" src="js/jqplot/jqplot.barRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqplot/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqplot/jqplot.pointLabels.min.js"></script>
+<script src="js/lang.js"></script>
+<script type="text/javascript">
+
+/*projectID*/
+
+var ample;
+
+$(document).ready(function(){    
+    if($.mobile.activePage==undefined){
+         var url = location.href;
+         url = url.split('#');
+         location.href = url[0];
+    }
+    $('#lang').hide();
+    lang.start();
+    lang.getLanguage();
+	$('#cards').attr('href',location.href+'&cards=true');
+	var projectId=location.search;
+	projectId=projectId.replace(/(\?project\=)/,'');
+    var project=new Project();
+    project.getProject(projectId);
+    	
+	$('#study-again').click(function(){$('#start-study-btn').click();});	
+	$('#start-study-btn').click(function(){	
+		project.loadStudy();
+	});
+	$('#reset-ranks').click(function(){
+	    project.resetCards();
+	});	
+});
+
+</script>
+
+
+

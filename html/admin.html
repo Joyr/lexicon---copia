@@ -1,0 +1,140 @@
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/main.css" rel="stylesheet" type="text/css"/>
+    <link href="css/black.css" rel="stylesheet" id="theme-stylesheet" type="text/css"/>  
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+    
+    <!--   - tagThat's base CSS (tagThat.css). -->
+    <link href="css/tagThat.css" rel="stylesheet" type="text/css">
+    
+    
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    
+    <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+    
+    <!-- Other plug-ins & useful tools -->
+    <script src="js/util.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/tagThat.js"></script>
+    <script src="js/lexicon.js"></script>
+    <script src="js/project.js"></script>
+    
+    <!--EXPIRE-->
+    
+<!-- Other options 
+
+-->      
+</head>
+<body>
+<script type="text/javascript">
+
+Cobra.install();
+$(document).ready(function(e){
+    //lexicon.start();
+    
+});
+
+</script>
+<!-- Home -->
+<div data-role="page" id="main-admin">
+    <div data-theme="a" data-role="header" id="header-manager" data-position="fixed">
+        <h3>
+            Administrador
+        </h3>
+        <a href="php/logout.php" class="ui-btn-right" data-ajax="false" data-theme="r" data-role="button" data-icon="delete" title="Logout" data-iconpos="right">Desconectar</a>
+        <div data-role="navbar" data-iconpos="top" >
+            <ul>
+                <li>
+                    <a href="#main-admin" data-transition="none" class="ui-btn-active ui-state-persist">
+                        Info
+                    </a>
+                </li>
+                <li>
+                    <a href="#students" data-transition="none">
+                        Estudiantes
+                    </a>
+                </li>
+                <li>
+                    <a href="#lessons-manage" data-transition="none">
+                        Lecciones
+                    </a>
+                </li>                
+            </ul>
+        </div>
+    </div>
+    <div data-role="content">
+    </div>
+</div>           
+
+<!-- Students -->
+<div data-role="page" id="students">
+    <div data-theme="a" data-role="header" data-id="header-manager" data-position="fixed">
+        <h3>
+            Administrador
+        </h3>
+        <a href="php/logout.php" class="ui-btn-right" data-ajax="false" data-theme="r" data-role="button" data-icon="delete" title="Logout" data-iconpos="right">Desconectar</a>
+        <div data-role="navbar" data-iconpos="top" >
+            <ul>
+                <li>
+                    <a href="#main-admin" data-transition="none">
+                        Info
+                    </a>
+                </li>
+                <li>
+                    <a href="#students" data-transition="none" class="ui-btn-active ui-state-persist">
+                        Estudiantes
+                    </a>
+                </li>
+                <li>
+                    <a href="#lessons-manage" data-transition="none">
+                        Lecciones
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div data-role="content">
+    </div>    
+</div>
+
+<!-- Students -->
+<div data-role="page" id="lessons-manage">
+    <div data-theme="a" data-role="header" data-id="header-manager" data-position="fixed">
+        <h3>
+            Administrador
+        </h3>
+        <a href="php/logout.php" class="ui-btn-right" data-ajax="false" data-theme="r" data-role="button" data-icon="delete" title="Logout" data-iconpos="right">Desconectar</a>
+        <div data-role="navbar" data-iconpos="top" >
+            <ul>
+                <li>
+                    <a href="#main-admin" data-transition="none">
+                        Info
+                    </a>
+                </li>
+                <li>
+                    <a href="#students" data-transition="none">
+                        Estudiantes
+                    </a>
+                </li>
+                <li>
+                    <a href="#lessons-manage" data-transition="none" class="ui-btn-active ui-state-persist">
+                        Lecciones
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div data-role="content">
+    </div>    
+</div>
+<!-- Dialogs pages -->
+
+
+</body>
+</html>

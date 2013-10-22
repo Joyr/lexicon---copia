@@ -1,0 +1,44 @@
+.ui-btn-up-r{
+	text-decoration:none;
+	border: 1px solid #044062;
+	background: #DF0000;
+	font-weight: bold;
+	color: #fff;
+	text-shadow: 0 1px 0 #194b7e;
+	background-image: -webkit-gradient(linear,left top,left bottom,from( #FF5959 ),to( #DF0000 ));
+	background-image: -webkit-linear-gradient( #FF5959,#DF0000 );
+	background-image: -moz-linear-gradient( #FF5959,#DF0000 );
+	background-image: -ms-linear-gradient( #FF5959,#DF0000 );
+	background-image: -o-linear-gradient( #FF5959,#DF0000 );
+	background-image: linear-gradient( #FF5959,#DF0000 );	
+}
+
+.ui-btn-hover-r{	
+	text-decoration:none;
+	border: 1px solid #044062;
+	background: #FF0606;
+	font-weight: bold;
+	color: #fff;
+	text-shadow: 0 1px 0 #194b7e;
+	background-image: -webkit-gradient(linear,left top,left bottom,from( #FF5959 ),to( #DF0000 ));
+	background-image: -webkit-linear-gradient( #FF5959,#FF0606 );
+	background-image: -moz-linear-gradient( #FF5959,#FF0606 );
+	background-image: -ms-linear-gradient( #FF5959,#FF0606 );
+	background-image: -o-linear-gradient( #FF5959,#FF0606 );
+	background-image: linear-gradient( #FF5959,#FF0606 );
+}
+.jqplot-point-label{
+	font-weight:bold;
+	border:1px grey solid;
+	padding:2px;
+	border-radius:10px;	
+}
+.img-flag{
+	position:relative;
+	left:-5px !important;
+	margin-right:5px !important;
+}
+#options-lang-menu li{
+	border:1px;
+}
+

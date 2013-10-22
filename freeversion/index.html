@@ -1,0 +1,792 @@
+<!doctype html>
+
+<!-- Die Zeige ist nicht echt -->
+<!-- Go Phillies! -->
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!-- Consider adding a manifest.appcache: h5bp.com/d/Offline -->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="es"> <!--<![endif]-->
+<head>
+  
+
+  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/i/378 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Lexicon</title>
+  <meta name="description" content="Lexicon, flashcard app for languages students.">
+
+  <!-- Mobile viewport optimized: h5bp.com/viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  
+
+  <link rel="icon" type="image/png" href="http://lexicon.on-lingua.org/favicon.png" />
+ 
+  <link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css">
+  <link rel="stylesheet" href="css/chevre.css">
+  <link rel="stylesheet" href="css/themes/theme.css">
+  <link rel="stylesheet" href="css/jqm-icon-pack-2.0-original.css">
+  
+  <link rel="stylesheet" href="js/jquery.jqplot.min.css">
+  
+  <link rel="stylesheet" id="theme-stylesheet" href="css/themes/blue.css">
+  
+  
+  <!-- apple touch icons -->
+  <link rel="apple-touch-icon"  href="apple-touch-icon-114x114-precomposed.png">
+  <meta name="apple-mobile-web-app-capable" content="yes"> <!-- remove url bar on ios -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+  <link rel="apple-touch-startup-image" href="img/splash.png">
+  
+    
+  <script src="js/jquery-1.9.1.js"></script>
+ 
+  <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="js/libs/jqplot/excanvas.min.js"></script><![endif]-->
+  <script>
+    $(document).on('pagebeforecreate', '[data-role="page"]', function(){     
+        setTimeout(function(){
+            $.mobile.loading( 'show', {
+                text: 'Loading...',
+                textVisible: true,
+                theme: 'a',
+                html: ""
+            });
+        },1);    
+    });
+    
+    $(document).on('pageshow', '[data-role="page"]', function(){  
+        setTimeout(function(){
+            $.mobile.loading('hide');
+        },300);      
+    });  
+      $(document).bind("mobileinit", function() {
+          $.support.cors = true;
+          $.mobile.allowCrossDomainPages = true;
+          $.mobile.pushStateEnabled = false;
+          $.mobile.buttonMarkup.hoverDelay = 200; //default 200; faster makes it more snappy but increases chance of accidental class application
+          $.mobile.phonegapNavigationEnabled = true; //good for Android they say
+          //$.mobile.defaultPageTransition = "slide"; //if you do this, remove all data-position="fixed"'s except in footer
+          
+          //normal platforms
+          $.mobile.defaultPageTransition = "fade"; //also consider slidefade
+          $.mobile.defaultDialogTransition = "pop";
+                    
+      });
+  </script>
+  <script src="freeversion/js/libs/jquery.mobile-1.3.1.min.js"></script>
+  <script src="freeversion/js/libs/jquery.rm.js"></script><!--TODO put that in plugins.js-->
+
+  <!-- scripts concatenated and minified via build script -->
+  <script src="freeversion/js/plugins.js"></script>
+  <script src="freeversion/js/constants.js"></script>
+  <script src="freeversion/js/utils.js"></script>
+
+  <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
+</head>
+<body>
+  
+  <div role="main">
+
+<div id="home" data-role="page" class="ui-responsive-panel">
+    
+    <div data-role="header" data-position="fixed" data-theme="b">
+        <select name="options-lang" id="options-lang" data-native-menu="false" data-theme="c" class="ui-btn-left" data-mini="true" data-iconpos="left">                        
+            <option>__Language__</option>
+            <!-- Language -->
+        </select>
+        <h1>Lexicon -Free-</h1>        
+        <a href="#options-panel" data-icon="grid" class="ui-btn-right">__Menu__</a>
+    </div>
+    
+    <div data-role="content">
+        <ul data-role="listview" id="project-list" data-split-icon="gear">
+        </ul>
+    </div>
+    
+    <div data-role="footer" data-position="fixed" data-theme="c">   
+        
+        <div data-role="navbar" data-iconpos="top">
+            <ul>
+            <li><a href="#project-add" data-icon="plus" data-rel="dialog" >__Create_Project__</a></li>
+            <li><a href="#importer" id="quizlet-import-button" data-icon="arrow-d">__Import__</a></li>
+            <li><a href="#sync-home" data-icon="refresh" class="ui-disabled">__Sync__</a></li>   
+            </ul>
+        </div>
+    </div>
+    
+    <div id="options-panel" data-role="panel" data-position="right" data-display="overlay" data-theme="b">
+        <div id="options-collapsible-set" data-role="collapsible-set" data-inset="false" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+            <div data-role="collapsible" data-content-theme="c">
+                <h3>__Studying__</h3>
+                <div>
+                    <label for="options-max-cards">__Max_Cards__</label>
+                    <input type="range" id="options-max-cards" data-highlight="true" value="25" min="10" max="100" />
+                </div>
+  
+                <div>
+                    <label for="options-font-size">__Font_size__</label>
+                    <select name="options-font-size" id="options-font-size" data-native-menu="false">
+                        <option value="SMALL">__Small__</option>
+                        <option value="MEDIUM">__Medium__</option>
+                        <option value="LARGE">__Large__</option>
+                        <option value="XLARGE">__Extra_Large__</option>
+                    </select>
+                </div> 
+                
+                <div>
+                    <label for="options-shuffle">__Shuffle_cards__</label>
+                    <select name="options-shuffle" id="options-shuffle" data-role="slider">
+                        <option value="off">Off</option>
+                        <option value="on" selected>On</option>
+                    </select> 
+                </div>
+                
+                <div>
+                    <label for="options-swipe">__Swipe_skip__</label>
+                    <select name="options-swipe" id="options-swipe" data-role="slider">
+                        <option value="off">Off</option>
+                        <option value="on" selected>On</option>
+                    </select>                     
+                </div>
+            </div>
+            
+            <div data-role="collapsible" data-content-theme="c">
+                <h3>__Appearance__</h3>
+                <div>
+                    <label for="options-theme">__Theme__</label>
+                    <select name="options-theme" id="options-theme" data-native-menu="false">                        
+                        <option value="blue">__Blueberry__</option>
+                        <option value="black">__Black__</option>
+                        <option value="green">__Apple__</option>
+                        <option value="red">__Cherry__</option>
+                        <!--<option value="purple">Grape</option>-->
+                    </select>
+                </div>
+            </div>                             
+
+            <div data-role="collapsible" data-content-theme="c">
+                <h3>__Data__</h3>
+                <div>
+                    <a href="#clear-data-warning" data-role="button" data-rel="dialog" data-icon="delete" data-theme="e">__Clear_data__</a>                   
+                </div>
+            </div>                            
+        </div>
+            
+        <br />
+        
+        <a href="#home" id="options-finish" data-role="button" data-theme="b" data-icon="check" data-rel="close" data-iconpos="right">__Save__</a>
+        <a href="#pay-to-freemium" id"pay-button" data-role="button" data-theme="e" data-icon="left" data-iconpos="right" data-rel="dialog">__Update__</a>
+        <a href="php/logout.php" data-ajax="false" data-theme="r" data-role="button" data-icon="delete" title="Logout" data-iconpos="right">__Logout__</a>
+        <a href="#home" data-role="button" data-icon="delete" data-rel="close" data-iconpos="right">__Cancel__</a>
+    </div>
+</div>
+
+<div id="project-edit-dialog" data-role="page">
+    <div data-role="header">
+        <h2 id="project-edit-header" data-theme="a">__Edit_Project__</h2>
+    </div>
+
+    <div data-role="content" data-theme="c">
+        <a href="#project-rename-dialog" id="project-edit-rename" data-role="button" data-rel="dialog"  data-theme="b" data-icon="edit">__Rename__</a>
+        <!--<a href="#project-merge-dialog" id="project-edit-merge" data-role="button" data-rel="dialog" data-icon="direction">__Merge__</a>-->
+        <a href="#home" id="project-edit-delete" data-role="button" data-theme="r" data-icon="delete">__Delete__</a>
+    </div>
+</div>
+
+<div id="project-rename-dialog" data-role="page">
+    <div data-role="header" data-theme="b">
+        <h2 id="project-edit-header">__Rename_Project__</h2>
+    </div>
+    
+    <div data-role="content">
+        <label>
+            __Name__: <input type="text" name="name" id="project-rename-field" value=""  />
+        </label>
+        
+        <a href="#home" id="rename-project-button" data-role="button" data-theme="b" data-icon="check">__Rename__</a> 
+    </div>
+</div>
+
+<div id="project-merge-dialog" data-role="page">
+    <div data-role="header" data-theme="b">
+        <h2>Merge Project</h2>
+    </div>
+    
+    <div data-role="content">
+        <p>This tool will merge this project, <em id="merge-project-name"></em>, into another project. This project's cards will be moved to the other project, and this project will be deleted.</p>
+        
+        <label for="merge-project-select">Project to merge into:</label>
+        <select name="merge-project-select" id="merge-project-select" data-native-menu="false"></select>
+        
+        <a href="#home" id="merge-project-button" data-role="button" data-theme="b" data-icon="check">Merge</a> 
+    </div>
+</div>
+
+<div id="project-add" data-role="page">
+    <div data-role="header" data-theme="a">
+        <h2>__Create_Project__</h2>
+    </div>
+
+    <div data-role="content">
+        <label>
+            __Name__: <input type="text" name="name" id="project-name-field" value=""  />
+        </label>
+        
+        <a href="#home" id="create-project-button" data-role="button" data-theme="b" data-icon="check">__Create__</a>
+    </div>
+</div>
+
+
+<!-- data-rel="back" disabled; replace '_back' with 'back' for it to work like a normal back button (last page) --><div id="project-home" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2 id="project-name">__Project_Home__</h2>
+        <a href="#home" data-rel="_back" data-icon="back">__Back__</a>
+        <a href="#home" data-icon="home">__Home__</a>
+    </div>    
+    
+    <div data-role="content">
+        <div id="project-card-chart"></div>
+        
+        <div id="project-description" class="center"></div>
+        <div data-role="collapsible" id="project-description-entry" data-theme="b" data-content-theme="b">
+            <h3>__Add_description__</h3>
+            <textarea id="project-description-entry-text"></textarea>
+            <button id="project-description-entry-button" data-icon="check">__Done__</button>
+        </div>
+        
+        <div data-role="controlgroup" class="project-main-controlgroup">
+            <a href="#study-session-init" id="study-session-init-button" data-role="button" data-icon="lightning">__Study__</a>            
+            <a href="#create-card" data-role="button" data-icon="plus">__Create_Flashcard__</a>
+            <a href="#batch-creator" data-role="button" data-icon="grid">__Mass_Flashcard_Creator__</a>
+            <a href="#card-manager" id="card-manager-button" data-role="button" data-icon="edit">__Card_Manager__</a>
+        </div>
+        
+        <br />
+        
+        <div data-role="controlgroup" class="project-main-controlgroup">
+            <!--<a href="#backup" id="backup-launch-button" data-role="button" data-icon="arrow-u">__Export__</a>-->
+            <a href="#project-tools" data-role="button" data-icon="gear" data-rel="popup">__Project_Tools__</a>
+        </div>
+    </div>
+    
+
+    <div id="project-tools" data-role="popup" data-theme="c" data-overlay-theme="a">
+        <div data-role="controlgroup" style="margin:0">
+            <a href="#project-edit-dialog" id="project-edit" data-rel="dialog" data-role="button" data-icon="edit">__Rename_delete_project__</a>            
+            <a href="#project-home" id="project-shuffle" data-role="button" data-icon="refresh">__Shuffle_flashcards__</a>
+            <a href="#project-home" id="project-reset" data-role="button" data-icon="back">__Reset_flashcard_ranks__</a>
+            <a href="#project-home" id="project-flip" data-role="button" data-icon="direction">__Swap_flashcards__</a>
+            <a href="#project-home" id="project-clear-description" data-role="button" data-icon="minus">__Clear_description__</a>
+        </div>
+    </div>    
+</div>
+
+<div id="backup" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Export_Flashcards__</h2>
+        <a href="#project-home" data-rel="_back" data-icon="back">__Back__</a>
+        <a href="#home" data-icon="home">__Home__</a>
+    </div>     
+    
+    <div data-role="content">
+        <p>You can export the flashcards in this project to your device as a backup or to use these flashcards with another apps.</p>
+        <p>You can export to various formats (XML, CSV, etc.) based on what you need. <strong>XML and JSON are frequently used by other flashcard apps, and comma/slash/enter-separated are good for plain text storage.</strong></p>
+        
+        <select id="backup-format" data-native-menu="false">
+            <option>Choose a format</option>
+            <option value="xml">XML</option>
+            <option value="json">JSON</option>
+            <option value="commaSep">Comma-separated</option>
+            <option value="slashSep">Slash-separated</option>
+            <option value="enterSep">Enter-separated</option>
+        </select>
+        
+        <div class="ui-body-c ui-body ui-corner-all" id="live-preview-holder">
+            <em>Live preview (example):</em>
+            <div id="backup-live-preview"></div>
+        </div>
+        
+        <br />
+        
+        <button id="backup-run" data-theme="b" data-icon="lightning">__Export__</button>
+        
+        <div id="backup-lower">
+            <div id="backup-directions">
+                Copy and paste the contents of the below text box into a text editing/notepad app. Save the file as <em>[something]</em>.<span id="backup-extension">txt</span>.
+                </div>
+            <textarea id="backup-text"></textarea>
+        </div>
+    </div>
+</div>
+
+<div id="create-card" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Create_Flashcard__</h2>
+        <a href="#project-home" data-rel="_back" data-icon="back">__Back__</a>
+        <a href="#home" data-icon="home">__Home__</a>
+    </div>       
+    
+    <div data-role="content">
+        
+        <form>
+            <textarea id="create-card-question" placeholder="Question"></textarea>
+            <textarea id="create-card-answer" placeholder="Answer"></textarea>
+            
+            <div data-role="collapsible" id="create-card-image-collapsible" data-theme="c" data-content-theme="b">
+               <h3>__Add_an_image__</h3>
+               <label for="create-card-image">__Add_an_image__ (PNG, JPG, GIF)</label>
+               <input type="file" id="create-card-image" accept="image/jpeg,image/png,image/gif,image/bmp" data-clear-btn="true" data-clear-btn-text="Clear" data-theme="c" />
+            </div>
+        </form>
+        
+        <a href="#create-card" class="create-card-button" data-role="button" data-icon="check" data-theme="b">__Create__</a>
+        <a href="#project-home" id="cancel-create-card-button" data-role="button" data-icon="delete" data-theme="c">__Cancel__</a>
+    </div>
+</div>
+
+<div id="batch-creator" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Mass_Flashcard_Creator__</h2>
+        <a href="#project-home" data-rel="_back" data-icon="back">__Back__</a>
+        <a href="#home" data-icon="home">__Home__</a>
+    </div>       
+    
+    <div data-role="content">
+        
+        <div data-role="collapsible" data-content-theme="c">
+            <h3>__Mass_Creator_Help__</h3>
+            <p>__MSG_Mass_Creator_1__</p>
+            <p>__MSG_Mass_Creator_2__</p>
+            <p>__Example__:</p>
+            <p style="font-style:italic;">
+                2+2: 4<br />
+                Color of the sky: Blue
+            </p>
+        </div>
+        
+        <form>
+            <div data-role="fieldcontain">
+                <label for="batch-style">__Entry_style__:
+                    <!-- TODO consider rolling out
+                        <a href="#entry-style-popup" data-rel="popup" data-role="button" data-icon="info" data-theme="b" data-iconpos="notext" data-inline="true" class="ui-icon-nodisc">Help</a> --></label>
+                <select id="batch-style" name="batch-style" data-native-menu="false">
+                    <option value=":">__Question__: __Answer__</option>
+                    <option value="-">__Question__ - __Answer__</option>
+                    <option value="/">__Question__ / __Answer__</option>
+					  <option value=",">__Question__, __Answer__</option>
+                </select>
+            </div>
+            
+            <textarea id="batch-text" placeholder="__MSG_Mass_Creator_3__"></textarea>
+        </form>
+        
+        <a href="#project-home" id="batch-create-button" data-role="button" data-icon="check" data-theme="b">__Create_Flashcards__</a> 
+    </div>
+    
+    <!--
+    <div id="entry-style-popup" data-role="popup" class="ui-content" data-theme="c" style="max-width: 300px;">
+        <p>The entry style represents the format of the question and answer. For instance, if your entry style is 'Question / Answer', you might enter your cards as:</p>
+        <p style="font-style:italic;">
+            2+2 / 4<br />
+            Sky's color / Blue
+        </p>
+    </div>
+    -->
+</div>
+
+<div id="card-manager" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Card_Manager__</h2>
+        <a href="#project-home" data-rel="_back" data-icon="back">__Back__</a>
+        <a href="#home" data-icon="home">__Home__</a>
+    </div>           
+    
+    <div data-role="content">
+        <!--
+        Sort cards by:
+        <div data-role="controlgroup">
+            <button id="sort-q-alpha">Alphabetically by Question</button>
+            <button id="sort-a-alpha">Alphabetically by Answer</button>
+        </div>
+        -->
+        
+      <ul id="card-manager-list" data-role="listview" data-inset="true" data-mini="true" data-filter="true" data-filter-placeholder="__Search_cards__..." data-split-icon="edit">
+      </ul>
+      
+    </div>
+</div>
+
+<div id="edit-card-dialog" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Edit_Flashcard__</h2>
+    </div>
+
+    <div data-role="content" data-theme="c">    
+        <form>            
+            <div id="edit-card-image-field">
+                <div id="edit-card-if-image">
+                    <img id="edit-card-image-preview" class="flashcard-image" />
+                    <a href="#card-manager" id="edit-card-image-clear" data-role="button" data-theme="c" data-icon="delete">__Remove_image__</a>
+                </div>
+                
+                <div id="edit-card-image-container">
+                    <label for="edit-card-new-image">__Add_change_image__</label>
+                    <input type="file" id="edit-card-new-image" accept="image/jpeg,image/png,image/gif,image/bmp" data-clear-btn="true" data-clear-btn-text="Clear" data-theme="c" />
+                </div>
+            </div>
+            
+            <textarea id="edit-card-question"></textarea>
+            <textarea id="edit-card-answer"></textarea>
+            
+            <a href="#card-manager" id="edit-card-finish-button" data-role="button" data-theme="b" data-icon="check">__Finish__</a>
+            <a href="#card-manager" id="edit-card-delete-button" data-role="button" data-theme="e" data-icon="delete">__Delete__</a>
+        </form>
+    </div>
+</div>
+
+<div id="study-session-init" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Starting_Session__</h2>
+        <a href="#project-home" data-rel="_back" data-icon="back">__Back__</a>
+        <a href="#home" data-icon="home">__Home__</a>
+    </div>       
+    
+    <div data-role="content">
+        
+        <div data-role="fieldcontain">
+            <label for="study-mode">__MSG_Study_1__</label>
+            <select id="study-mode" name="study-mode" data-native-menu="false">
+                <option value="normal">__Option_Study_1__ </option>
+                <option value="cram">__Option_Study_2__ </option>
+                <option value="perfection" id="study-mode-perfection">__Option_Study_3__</option>
+            </select>
+        </div>
+        
+        <div data-role="fieldcontain">
+            <label for="study-response">__MSG_Study_2__ </label>
+            <select id="study-response" name="study-response" data-native-menu="false">
+                <option value="normal">__Options_Study_4__ </option>
+                <option value="jeopardy">__Options_Study_5__ </option>
+                <option value="random">__Options_Study_6__ </option>
+            </select>    
+        </div>   
+        
+        <form>
+            <a href="#study-main" id="study-session-start" data-role="button" data-icon="lightning" data-theme="b">__Start__</a>
+            <a href="#project-home" data-role="button" data-rel="_back" data-icon="back">__Cancel__</a>
+        </form>
+    </div>
+</div>
+
+<div id="study-main" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2 id="study-progress-counter">__Studying__</h2>
+        <a href="#" id="study-quit" data-icon="delete">__Quit__</a>
+        <a href="#" id="study-skip" data-icon="forward">__Skip__</a>
+    </div>       
+    
+    <div data-role="content">
+        <img id="study-image" class="flashcard-image" />
+        <div id="study-textarea"></div>
+        
+        <br />
+        <div id="study-buttons">
+            <div class="study-main-question" data-role="navbar">
+                <ul>
+                    <li>
+                <a id="show-answer-button" data-icon="refresh" data-theme="b" class="ui-corner-all" data-iconpos="top" data-mini="true">__Flip__</a></li>
+                </ul>
+            </div>
+            <div class="study-main-answer" data-role="navbar" data-iconpos="top">
+                <ul>
+                <li><a href="#" id="study-result-yes"   data-icon="check"   data-theme="b" class="ui-corner-all corner-noright">
+                    __Know_it__ </a></li>
+                <li><a href="#" id="study-result-sort"    data-icon="minus"   data-theme="c">
+                    __Sort_of__ </a></li>
+                <li><a href="#" id="study-result-no"  data-icon="delete"  data-theme="a" class="ui-corner-all corner-noleft">
+                    __Don't_know__  </a></li>                
+                </ul>
+            </div>     
+        </div>       
+    </div>
+</div>
+
+
+<div id="study-session-end" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Finished_Studying__</h2>
+        <a href="#project-home" data-rel="_back" data-icon="back">__Back__</a>
+        <a href="#home" data-icon="home">__Home__</a>
+    </div>       
+    
+    <div data-role="content">
+        <ul data-role="listview" data-inset="true" data-count-theme="c">
+            <li>
+                <img class="ui-icon-check ui-icon ui-li-icon">
+                __Knew_it__
+                <span class="ui-li-count" id="result-yes-count"></span>
+            </li>
+            <li>
+                <img class="ui-icon-minus ui-icon ui-li-icon">
+                __Sort_of__
+                <span class="ui-li-count" id="result-sort-count"></span>
+            </li>
+            <li>
+                <img class="ui-icon-delete ui-icon ui-li-icon">
+                __Didn't_know__
+                <span class="ui-li-count" id="result-no-count"></span>
+            </li>                 
+            <li>
+                <img class="ui-icon-forward ui-icon ui-li-icon">
+                __Skipped__
+                <span class="ui-li-count" id="result-skipped-count"></span>
+            </li>       
+            <li data-theme="a">
+                <img class="ui-icon-plus ui-icon ui-li-icon">
+                __Total__
+                <span class="ui-li-count" id="result-total-count"></span>
+            </li>            
+        </ul>
+        
+        <a href="#project-home" data-role="button" data-icon="check" data-theme="b">__Done__</a>
+        <a href="#study-session-init" data-role="button" data-icon="refresh">__Study_Again__</a>
+    </div>
+</div>
+
+
+<div id="importer" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Flashcard_Importer__</h2>
+        <a href="#home" data-rel="_back" data-icon="back">__Back__</a>
+        <a href="#home" data-icon="home">__Home__</a>
+    </div>           
+    
+    <div data-role="content">
+        
+        <div data-role="collapsible" data-theme="c" data-content-theme="c">
+            <h3>Flashcard Importer Info</h3>
+            <p>Save time by finding flashcards from Quizlet.com's database of <strong>over 20 million flashcard sets</strong>! Enter what you want to study, and Cabra will find the best matching sets on Quizlet.</p>
+            <p>Click on a set to import it and start studying.</p>
+        </div>
+        
+        <div data-role="fieldcontain">
+            <label for="quizlet-search">Keywords:</label>
+            <input type="search" name="quizlet-search" id="quizlet-search" value="" />
+            
+            <button id="quizlet-search-submit" data-icon="search" data-theme="b">Find Projects</button>
+        </div>
+        
+      <ul id="quizlet-list" data-role="listview" data-inset="true" data-mini="true" data-split-icon="check">
+      </ul>
+      
+    </div>
+</div>
+
+<div id="importer-sample" data-role="page">
+    <div data-role="header" data-theme="a">
+        <h2><span id="importer-sample-name"></span></h2>
+    </div>     
+    <div data-role="content">
+        <div id="importer-sample-description"></div>
+        <em><span id="importer-sample-numcards"></span> flashcards</em>
+        
+        <p>Some sample flashcards:</p>
+        <ul id="importer-sample-list" data-role="listview" data-inset="true" data-mini="true"></ul>
+        
+        <a href="#" data-role="button" id="importer-sample-accept" data-icon="check" data-theme="b">__Import__</button>
+        <a href="#importer" data-role="button" id="importer-sample-cancel" data-icon="delete">__Cancel__</a>
+    </div>
+</div>
+
+<div id="sync-home" data-role="page">
+    <div data-role="header" data-position="fixed" data-theme="a">
+        <h2>__Sync__</h2>
+        <a href="#home" data-rel="_back" data-icon="back">__Back__</a>
+        <a href="#home" data-icon="home">__Home__</a>
+    </div>  
+    
+    <div data-role="content">
+        <div id="sync-already-set-up">
+            <!-- shown if the user's set up sync already -->
+            <p>Sync's already set up on this device. Your sync passcode is <strong id="sync-passcode-reminder"></strong>.</p>
+            
+            <p>You can now sync with Cabra <a href="#download" data-rel="dialog">on another device</a> or on the web at <a href="http://chevre.hathix.com">chevre.hathix.com.</a></p>
+            
+            <div data-role="controlgroup">
+            <button id="sync-upload" data-icon="arrow-u" data-theme="b">Upload</button>
+            <a href="#sync-downloaded" data-role="button" id="sync-download" data-icon="arrow-d" data-theme="b" data-rel="dialog" >Download</a>            
+            </div>
+            <a href="#home" data-role="button" id="sync-stop" data-theme="e" data-icon="minus">Stop syncing</a>
+        </div>
+        <div id="sync-not-set-up">
+            <!-- shown if the user's not set up sync -->
+            
+            <p>Study from multiple devices? Set up sync so your flashcards are automatically synchronized between your computer, phone, tablet, or anything else!</p>
+            
+            <p>Think up a <strong>unique, memorable passphrase consisting of 3-4 words</strong> (see the examples below) and you can start syncing. Then enter your passphrase again on another device to connect it to sync.</p>
+            
+            <p>If you've set up sync from another device, just enter your passphrase here and you'll be hooked up.</p>
+            
+            <label for="sync-passcode-entry" class="ui-hidden-accessible">Passphrase</label>
+            <input type="text" id="sync-passcode-entry" placeholder="Passphrase" />
+            <a href="#sync-started" data-rel="dialog"  data-role="button" id="sync-start" data-icon="lightning" data-theme="b">Start syncing</a>
+            
+            <div data-role="collapsible" data-theme="c" data-content-theme="c">
+                <h3>Passcode Examples</h3>
+                <p>A good passcode will be unique, memorable, and preferably 3-4 words long. Quotes, movie titles, and names work well. Here are some examples:</p>
+                <ul style="font-style: italic;">
+                    <li>boston red sox</li>
+                    <li>shaken not stirred</li>
+                    <li>finding nemo</li>
+                    <li>franklin delano roosevelt</li>
+                </ul>
+            </div>
+            
+            <div data-role="collapsible" data-theme="c" data-content-theme="c">
+                <h3>Privacy</h3>
+                <p>Cabra cares about your privacy! It's not developed by some creepy company out to get you (and your money) - but instead by a student just like you.</p>
+                <p>Your data, therefore, is stored securely and anonymously in the cloud. Besides your passcode, Cabra doesn't keep any data on you - why should we care?</p>
+                <p>Got a privacy question? Please don't hesitate to write to me!</p>
+                <a href="#contact" data-role="button" data-rel="dialog"  data-icon="chat">Contact</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="sync-started" data-role="page">
+    <div data-role="header" data-theme="a">
+        <h3>__Sync_started__</h3>
+    </div>
+
+    <div data-role="content" data-theme="c">
+        Congrats! Sync has been set up on this device. Please press the button below to restart Cabra.
+        <button class="sync-reload-page" data-theme="b" data-icon="refresh">Restart Cabra</button>
+    </div>        
+</div>
+
+<div id="sync-downloaded" data-role="page">
+    <div data-role="header">
+        <h3>__Sync_finished__</h3>
+    </div>
+
+    <div data-role="content" data-theme="c">
+        Congrats! Your cards have been loaded onto this device. Please press the button below to restart Cabra.
+        <button class="sync-reload-page" data-theme="b" data-icon="refresh">Restart Cabra</button>
+    </div>        
+</div>     
+
+<div id="clear-data-warning" data-role="page">
+    <div data-role="header">
+        <h3>__Clear_data__ ?</h3>
+    </div>
+
+    <div data-role="content" data-theme="c">
+        <p>Are you sure you want to delete all of your data forever, including your <strong>flashcards and settings</strong>?</p>
+        <p><em>(If you've set up sync, your data is safe in the cloud but will be removed from this device.)</em></p>
+        
+        <a href="#home" data-role="button" data-icon="back">__Cancel__</a>
+        <button id="clear-data" data-theme="e" data-icon="delete">__Clear_data__</button>
+    </div>      
+</div>  
+
+<div id="pay-to-freemium" data-role="page">
+    <div data-role="header">
+        <h3>__Update__</h3>
+    </div>
+    <div data-role="content">
+        <p>__MSG_Update__</p>        
+        <a href="#home" data-role="button" data-icon="back">__Cancel__</a>
+        <button id="pay-to-update" data-theme="e" data-icon="add">__Update__</button>
+    </div>    
+</div>
+
+  </div>
+  
+  <!--<div id="toast" data-role="popup" data-theme="a" class="ui-body">
+      Testing...
+  </div>-->
+  
+  <div id="image-popup" data-role="popup" data-overlay-theme="a">
+      <!-- TODO this doesn't work (isn't enhanced) if we do it the normal way... so we have to do the hack. Figure out why this is. -->
+      <a title="Close" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" data-rel="back" data-role="button" data-theme="b" data-icon="delete" data-iconpos="notext" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-b">
+          <span class="ui-btn-inner"><span class="ui-btn-text">__Close__</span><span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></span></a>
+      <img id="image-popup-image" />
+  </div>
+  
+  <div id="templates" data-role="page">
+      <li id="template-project" data-role="listitem">
+        <a href="#project-home" class="project">
+            <div class="project-name"></div>
+            <div class="project-description"></div>
+            <!--<span class="ui-li-count"><span class="project-card-count"></span> Cards</span>-->
+        </a>
+        
+        <a href="#project-edit-dialog" class="project-options" data-rel="dialog" ></a>          
+      </li>
+      
+      <li id="template-card" data-role="listitem">
+            <a href="#edit-card-dialog" class="card-manager-edit-button" data-rel="dialog">
+                <h3><div class="ui-icon ui-icon-question" style="float:left" title="Question"></div>&nbsp;
+                    <span class="card-manager-question"></span></h3>
+                <h3><div class="ui-icon ui-icon-chat" style="float:left" title="Answer"></div>&nbsp; 
+                    <span class="card-manager-answer"></span></h3>
+                <span class="ui-li-count" title="Rank C">C</span>
+            </a>
+            <!--<a href="#edit-card-dialog" class="card-manager-edit-button" data-rel="dialog" ></a>  --> 
+      </li>   
+      
+      <li id="template-quizlet" data-role="listitem">
+            <a href="#importer-sample" data-rel="dialog" class="quizlet-import-button">
+                <div class="quizlet-name"></div>
+                <div class="quizlet-description project-description"></div>                
+                <span class="ui-li-count"><span class="quizlet-card-count"></span> __Cards__</span>
+            </a>            
+      </li>     
+      
+      <img id="template-flashcard-image" class="flashcard-image" />
+      
+      <span id="template-feedback">
+          <input name="" id="" value="" type="radio">
+          <label for=""></label>
+      </span>
+
+  </div>
+  
+  
+  <footer>
+
+  </footer>
+
+
+  <!-- JavaScript at the bottom for fast page loading -->
+
+    
+  
+  <script src="freeversion/js/main.js"></script>
+  <script src="freeversion/js/chevre.js"></script>
+  <script src="freeversion/js/view.js"></script>
+  
+  <script src="freeversion/js/card.js"></script>
+  <script src="freeversion/js/session.js"></script>
+  <script src="freeversion/js/project.js"></script>
+  
+  <script src="freeversion/js/backup.js"></script>
+
+  
+  <script async src="freeversion/js/import.js"></script>
+  <!-- end scripts -->
+  <!-- user variable -->
+  <script src="js/lang.js"></script>
+  <script src="js/jquery.jqplot.min.js"></script>
+  <script src="js/jqplot/jqplot.barRenderer.min.js"></script>  
+  <script type="text/javascript" src="js/jqplot/jqplot.categoryAxisRenderer.min.js"></script>
+  <script type="text/javascript" src="js/jqplot/jqplot.pointLabels.min.js"></script>
+  
+  
+</body>
+</html>

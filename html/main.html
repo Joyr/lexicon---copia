@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lexicon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/main.css" rel="stylesheet" type="text/css"/>
+    <link href="css/black.css" rel="stylesheet" id="theme-stylesheet" type="text/css"/>  
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+    
+    <!--   - tagThat's base CSS (tagThat.css). -->
+    <link href="css/tagThat.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="http://lexicon.on-lingua.org/favicon.png" />
+    
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    
+    <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+    
+    <!-- Other plug-ins & useful tools -->
+    <script src="js/util.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/tagThat.js"></script>
+    <script src="js/lexicon.js"></script>
+    <script src="js/project.js"></script>
+    
+    
+    <!--EXPIRE-->
+    
+<!-- Other options 
+
+-->      
+</head>
+<body>
+
+<div data-role="page" id="main">
+    <div data-role="panel" id="menupanel" data-position="right" data-display="overlay">
+        <div id="options-collapsible-set" data-role="collapsible-set" data-inset="false" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+            <div data-role="collapsible" data-content-theme="c">
+                <h3>__Account_Configuration__</h3>
+                <div>
+                	<ul data-role="listview" data-inset="false">
+                		<li>
+                			<a>__Change_Pass__</a>
+                		</li>
+                		<li>
+                			<a>__Change_Profile__</a>
+                		</li>
+                	</ul>
+                </div>
+            </div>   
+            
+            <div data-role="collapsible" data-content-theme="c">
+                <h3>__Studying__</h3>
+                <div>
+                    <label for="options-max-cards">__Max_Cards__</label>
+                    <input type="range" id="options-max-cards" data-highlight="true" value="25" min="10" max="100" />
+                </div>
+  
+                <div>
+                    <label for="options-font-size">__Font_size__</label>
+                    <select name="options-font-size" id="options-font-size" data-native-menu="false">
+                        <option value="SMALL">__Small__</option>
+                        <option value="MEDIUM">__Medium__</option>
+                        <option value="LARGE">__Large__</option>
+                        <option value="XLARGE">__Extra_Large__</option>
+                    </select>
+                </div>                             
+            </div>
+            
+            <div data-role="collapsible" data-content-theme="c">
+                <h3>__Appearance__</h3>
+                <div>
+                    <label for="options-theme">__Theme__</label>
+                    <select name="options-theme" id="options-theme" data-native-menu="false">                        
+                        <option value="blue">__Blueberry__</option>
+                        <option value="black">__Black__</option>
+                        <option value="green">__Apple__</option>
+                        <option value="red">__Cherry__</option>
+                        <!--<option value="purple">Grape</option>-->
+                    </select>
+                </div>
+            </div> <!-- collapse -->              
+        </div>
+        <br />
+        <a href="php/logout.php" data-ajax="false" data-theme="r" data-role="button" data-icon="delete" title="Logout" data-iconpos="right">__Logout__</a>
+        <a href="#menupanel" data-role="button" data-rel="close">__Close__</a>
+    </div>
+	
+	
+    <div data-role="header"> 
+        <select name="options-lang" id="options-lang" data-native-menu="false" data-theme="c" class="ui-btn-left" data-mini="true" data-iconpos="left">                        
+            <option>__Language__</option>
+            <!-- Language -->
+        </select>  
+        <div hidden>
+            <!-- Language IMG -->
+        </div>    	
+     	<div class="img-title">
+            <img src="img/On-lingua_web_peque.png" alt="image"/>            
+        </div>
+        <a href="#menupanel" class="ui-btn-right" data-theme="b" data-role="button" data-icon="grid" title="MENU" data-iconpos="right">__Menu__</a>
+        <div data-role="navbar">
+        <ul>
+            <li>
+                <a href="#main" class="ui-btn-active ui-state-persist" data-transition="flip">
+                    __Owners__
+                    <span class="ui-li-count project-card-count-title numProjects-title">0</span>
+                </a>
+            </li>
+            <li>
+                <a href="#main-official" data-transition="flip">
+                    __On-lingua__
+                    <span class="ui-li-count project-card-count-title numProjects-official-title">0</span>
+                </a>
+            </li>            
+        </ul>   
+        </div>                     	
+    </div>
+    <!-- HEADER CONTENT -->
+    
+    <div data-role="content" role="main" >
+        <ul data-role="listview" id="projects" data-theme="c" data-split-icon="gear" data-filter="true" data-filter-placeholder="Filtrar proyectos">        
+            <!--<li data-role="list-divider" id="projects-title" data-mini="true"><h3>__Project__</h3><span id="numProjects" class="ui-li-count">0</span></li>-->
+        </ul>
+    </div>         
+    <div data-role="footer" data-position="fixed" data-theme="c">
+    	<div data-role="navbar" data-iconpos="top">
+        <ul>
+            <li>
+                <a href="#createproject" id='add-project-btn' data-transition="slideup" data-icon="plus" data-rel="dialog">
+                    __Create_Project__
+                </a>
+            </li>
+            <li>
+                <a href="?s" id="search" data-ajax="false" data-transition="fade" data-theme="" data-icon="search">
+                    __Search_projects__
+                </a>
+            </li>
+            <li>
+                <a data-transition="fade" data-theme="" data-icon="arrow-d" class="ui-disabled">
+                    __Import_projects__
+                </a>
+            </li>
+        </ul>   
+    	</div> 
+	</div>           
+</div>
+
+
+<div data-role="page" id="main-official">
+        <div data-role="panel" id="menupanel" data-position="right" data-display="overlay">
+        <div id="options-collapsible-set" data-role="collapsible-set" data-inset="false" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+            <div data-role="collapsible" data-content-theme="c">
+                <h3>__Studying__</h3>
+                <div>
+                    <label for="options-max-cards">__Max_Cards__</label>
+                    <input type="range" id="options-max-cards" data-highlight="true" value="25" min="10" max="100" />
+                </div>
+  
+                <div>
+                    <label for="options-font-size">__Font_size__</label>
+                    <select name="options-font-size" id="options-font-size" data-native-menu="false">
+                        <option value="SMALL">__Small__</option>
+                        <option value="MEDIUM">__Medium__</option>
+                        <option value="LARGE">__Large__</option>
+                        <option value="XLARGE">__Extra_Large__</option>
+                    </select>
+                </div>                             
+            </div>
+            
+            <div data-role="collapsible" data-content-theme="c">
+                <h3>__Appearance__</h3>
+                <div>
+                    <label for="options-theme">__Theme__</label>
+                    <select name="options-theme" id="options-theme" data-native-menu="false">                        
+                        <option value="blue">__Blueberry__</option>
+                        <option value="black">__Black__</option>
+                        <option value="green">__Apple__</option>
+                        <option value="red">__Cherry__</option>
+                        <!--<option value="purple">Grape</option>-->
+                    </select>
+                </div>
+            </div>              
+        </div>
+        <br />
+        <a href="php/logout.php" data-ajax="false" data-theme="r" data-role="button" data-icon="delete" title="Logout" data-iconpos="right">__Logout__</a>
+        <a href="#menupanel" data-role="button" data-rel="close">__Close__</a>
+    </div><!-- /panel -->
+    
+    <div data-role="header">        
+        <div class="img-title">
+            <img src="img/On-lingua_web_peque.png" alt="image"/>            
+        </div>
+        <a href="#menupanel" class="ui-btn-right" data-theme="b" data-role="button" data-icon="grid" title="MENU" data-iconpos="right">__Menu__</a>
+        <div data-role="navbar">
+        <ul>
+            <li>
+                <a href="#main" data-transition="flip">
+                    __Owners__
+                    <span class="ui-li-count project-card-count-title numProjects-title">0</span>
+                </a>
+            </li>
+            <li>
+                <a href="#main-official" class="ui-btn-active ui-state-persist">
+                    __On-lingua__
+                    <span class="ui-li-count project-card-count-title numProjects-official-title">0</span>                
+                </a>
+            </li>            
+        </ul>   
+        </div>                      
+    </div>
+    <!-- HEADER CONTENT -->
+    
+    <div data-role="content" role="main" >
+        <ul data-role="listview" id="projects-official" data-theme="b" data-split-icon="gear" data-filter="true" data-filter-placeholder="Filtrar proyectos">        
+            <li data-role="list-divider" id="projects-title-official" data-theme="e"><h1>__Projects_On-lingua__</h1><span id="numProjects-official" class="ui-li-count">0</span></li>
+        </ul>
+    </div>         
+    <div data-role="footer" data-position="fixed" data-theme="c">
+        <div data-role="navbar" data-iconpos="top">
+        <ul>            
+            <li>
+                <a href="?s" id="search" data-ajax="false" data-transition="fade" data-theme="" data-icon="search">
+                    __Search_projects__
+                </a>
+            </li>
+            <li>
+                <a data-transition="fade" data-theme="" data-icon="arrow-d" class="ui-disabled">
+                    __Import_projects__
+                </a>
+            </li>
+        </ul>   
+        </div> 
+    </div>           
+</div>
+
+<!-- Dialogs pages -->
+
+<div data-role="dialog" id="alert-msg"> 
+	<div data-role="header">
+    	<h3>__Alert__</h3>
+    </div>
+    <div data-role="content">
+       <p></p>
+    </div>
+</div>
+
+
+<div data-role="dialog" id="createproject" class="dialog" data-rel="home" data-url="test"> 
+	<div data-role="header">
+    	<h3>__Create_Project__</h3>
+    </div>
+    <div data-role="content">
+        <ul id="add-project-form" class="ui-listview ui-listview-inset ui-corner-all">
+            <li class="ui-li ui-li-static ui-btn-up-c ui-first-child"><label for="nameP">__Name__:</label><input id="nameP" type="text" name="name"/></li>
+            <li class="ui-li ui-li-static ui-btn-up-c"><label for="descrip">__Description__:</label><textarea id="descrip" name="description"></textarea></li>
+            <li class="ui-li ui-li-static ui-btn-up-c"><label for="tag">__Tags__:</label><textarea id="tag" name="tag"></textarea><p class="ui-li-desc">__MSG_tags__</p></li>
+            <li class="ui-li ui-li-static ui-btn-up-c ui-last-child"><button class="project-form-accept" data-icon="check" data-iconpos="left" data-theme="b">__Create__</button></li>                    
+        </ul>
+    </div>
+</div>
+
+<div data-role="dialog" id="edit-project" class="dialog" data-rel="home"> 
+	<div data-role="header">
+    	<h3>__Edit_Project__</h3>
+    </div>
+    <div data-role="content">
+        <ul id="edit-project-form" class="ui-listview ui-listview-inset ui-corner-all">
+            <li class="ui-li ui-li-static ui-btn-up-c ui-first-child"><label for="name-edit-P">__Name__:</label><input id="name-edit-P" type="text" name="name"/></li>
+            <li class="ui-li ui-li-static ui-btn-up-c"><label for="descrip-edit">__Description__:</label><textarea id="descrip-edit" name="description"></textarea></li>
+            <li class="ui-li ui-li-static ui-btn-up-c"><label for="tag">__Tags__:</label><textarea id="tag-edit" name="tag"></textarea><p class="ui-li-desc">__MSG_tags__</p></li>
+            <li class="ui-li ui-li-static ui-btn-up-c ui-last-child"><button class="project-form-accept" type="submit" data-icon="check" data-iconpos="left" data-theme="b">__Edit__</button></li>                    
+        </ul>
+    </div>
+</div>
+
+<div id="dialog-options"  data-role="dialog" class="dialog">
+    	<div data-role="header">
+            <h3>__Edit_Project__</h3>
+        </div>
+        <div data-role="content" data-iconpos="left">
+	        <a href="#edit-project" id="edit-project-btn" data-theme="b" aria-haspopup="true" data-rel="dialog" data-role="button" data-icon="gear">__Edit__</a>
+           	<!--<a href="" id="edit-fc" data-role="button" data-transition="slideup"  data-icon="arrow-r" data-ajax="false"> Editar Flashcards</a>	-->			
+            <a href="#dialog-modal-remove" data-role="button" data-rel="dialog" data-transition="pop" data-icon="delete" data-theme="r">__Delete__</a>                    
+        </div>
+</div>
+
+<div id="dialog-modal-remove" data-role="dialog" data-rel="home" class="dialog">
+	<div data-role="header">
+    	<h3>__Delete_project__</h3>
+    </div>
+    <div data-role="content" data-iconpos="left">
+    	<h3>__MSG_delete__</h3>
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+                <a data-role="button" data-rel="back" data-theme="c" data-icon="back" >
+               		__Cancel__
+                </a>
+            </div>
+            <div class="ui-block-b">
+                <a id="remove" data-role="button" data-theme="r" data-icon="delete" >
+                	__Delete__ 
+                </a>
+            </div>
+        </div>        
+    </div>
+</div>
+
+<!-- Templates -->
+<div id="templates" data-role="page">
+	<li id="template-project" data-role="listitem">
+    	<a href="" class="project-study" data-transition="fade">
+        <h2 class="project-name"></h2>
+        <p class="project-description"></p>
+        <span class="ui-li-count project-card-count"></span></a>
+        <a class="edit" href="#dialog-options" data-rel="dialog" data-transition="pop">__Edit__</a>
+    </li>
+    <li id="template-project-tags" data-role="listitem">
+    	<a href="" class="project-study" data-transition="fade" data-ajax="false">
+        <h2 class="project-name"></h2>       
+        <!--<p class="project-description"></p>-->
+        <span class='project-tag-title' hidden>__Tags__:</span>
+        <p class="project-tag"></p>
+        <span class="ui-li-count project-card-count"></span></a>
+        <a class="edit" href="#dialog-options" data-rel="dialog" data-transition="pop" data-icon="gear">__Edit__</a>
+    </li>
+    <li id="template-card" data-role="listitem">
+            <a href="" class="card-manager-edit-button" data-rel="dialog">
+                <h3><div class="ui-icon ui-icon-question" style="float:left" title="Question"></div>&nbsp;
+                    <span class="card-manager-question"></span></h3>
+                <h3><div class="ui-icon ui-icon-chat" style="float:left" title="Answer"></div>&nbsp; 
+                    <span class="card-manager-answer"></span></h3>
+                <span class="ui-li-count" title=""></span>
+            </a>
+      </li>
+      <li id="template-non-project" data-role="listitem">
+        <h3 class="project-name"></h3>
+        <p class="project-description"></p>
+    </li>
+</div>
+<script src="js/lang.js"></script>
+<script type="text/javascript">
+var edit=0;
+var pID=0;
+Cobra.install();
+$(document).ready(function(e){
+    lexicon.start();
+    lang.start({flags:true});
+    lang.getLanguage();
+    var editProject=$('#edit-project');
+    //Refresca los proyectos de la base de datos cada 5 segundos    
+    //window.setInterval(function(){getProjects();},5000);
+    //getProjects();
+    $('#tag').tagThat({addClass:'ui-shadow-inset ui-corner-all',autocomplete:true,server:'php/tags.php'});
+    $('#tag-edit').tagThat({addClass:'ui-shadow-inset ui-corner-all',autocomplete:true,server:'php/tags.php'});
+    //$('input[name=inputTag]').attr('data-role','none');
+    $('#add-project-btn').bind('click',function() {     
+        edit=option.ADD;
+        $('input[name=name]').val('');
+        $('textarea[name=description]').val('');
+        $('#tag').removeAll();                                          
+    });
+    $('#edit-project-btn').click(function(){
+        var project = editProject.jqmData('project');
+        edit=option.EDIT;
+        $('input[name=name]').val(project.name);
+        $('textarea[name=description]').val(project.description);
+        $('textarea[name=tags]').removeAll();
+        $('#tag-edit').addTag(project.tags);
+        pID=project.id;
+        $('#edit-fc').attr('href','?project='+project.id+'&cards');
+        $('#flashcard-divider h1').html('Proyecto: '+project.name);
+        
+    });
+    $('.project-form-accept').click(function(e){        
+        var name=(edit)?$('#nameP').val():$('#name-edit-P').val();          
+        var name1=$.trim(name);
+        var description=(edit)?$('#descrip').val():$('#descrip-edit').val();
+        var tag=(edit)?$('#tag').getTagJSON():$('#tag-edit').getTagJSON();
+        if(name1!=''){
+            var action1=(edit)?action.ADD:action.EDIT;          
+            var project = new Project(name, description,null,tag);
+            if(!edit){              
+                project.setId(pID);
+            }           
+            lexicon.saveProject(project,action1);
+            if($('input[name=name]').hasClass(MISSING))
+                $('input[name=name]').removeClass(MISSING);
+            
+        }else{
+            alert('Error');
+            if(!$('input[name=name]').hasClass(MISSING))
+                $('input[name=name]').addClass(MISSING);            
+        }       
+    });
+    $('#remove').click(function(){
+        var project = editProject.jqmData('project');           
+        lexicon.saveProject(project,action.DELETE);                     
+    });  
+    
+    $('#edit-fc').click(function(){
+        $('#dialog-options').dialog('close');
+    });
+
+});
+
+</script>
+</body>
+</html>

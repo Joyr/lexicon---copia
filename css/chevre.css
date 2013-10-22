@@ -1,0 +1,143 @@
+html, *{
+    font-family: "Open Sans", "Droid Sans", Ubuntu, "Trebuchet MS", Verdana, Calibri, sans-serif !important;
+}
+
+html{
+    overflow-x: hidden; /* no horiz scrollbars */
+}
+
+#home{
+   background-size: 100% auto; 
+   overflow: hidden; /* stops embedded vertical scroller (besides the page's normal one)*/
+}
+
+/*#study-question, #study-answer{
+ font-size: 130%;
+ }*/
+
+#study-result-buttons .ui-btn-inner {
+    white-space: normal; /* prevent truncation of button text in study result buttons (know, don't know) */
+}
+
+#study-textarea {
+    /* TODO put padding on top and bottom so it takes up more room */
+   /* TODO find some way to vertical center the text in here */
+    /*font-size: 200%;*/
+    text-align: center;
+    /* min-height: 300px; /*
+    /*white-space: pre-line;*/
+   
+}
+
+#study-textarea ul{
+    margin: 0;
+    line-height: 1em;
+}
+
+.flashcard-image{
+    /* any image we've added to a flashcard */
+   border-radius: .4em;
+   border: 3px solid #FFF;
+   box-shadow: 0 0 5px 5px #CCC;   
+   padding: .1em;    
+   background-color: #FAFAFA; /* body is #F9 */
+}
+
+#study-image{
+    max-width: 300px; /* TODO consider changing this... most screens wider than tall (except phones) so big width better than big height? */
+    max-height: 220px; 
+   display: block;
+   margin: .2em auto;
+}
+
+.card-manager-edit-button>h3{
+    /* Q/A text; make it wrap */
+    white-space: normal;
+    margin: 6px 0; /* default 9.6; TODO remove if this is responsive and this line messes it up */
+}
+
+.card-manager-image{
+    max-height: 80px;
+    max-width: 80px;
+   /*box-shadow: 0 0 2px 2px #CCC;
+   border-radius: .3em !important;*/
+}
+
+#edit-card-image-preview{
+    text-align: center;
+    max-width: 290px; /* TODO maybe make this consistent w/ ruling from #study-image? */
+    max-height: 180px; /* really can't be too tall */
+    display: block;
+   margin: 5px auto;       
+}
+
+#edit-card-image-container{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: .5em; /* this ends up looking like 1em b/c of bottom padding on form elems */
+    margin-bottom: 1em;
+}
+
+.project-description {
+    font-size: 80%;
+    opacity: 0.6; /* blend in more with bg */
+    font-style: italic;
+}
+
+#project-card-chart {
+    /* only for when there's no chart */
+    text-align: center;
+}
+
+#live-preview-holder{
+}
+
+/* prevent space on top of options */
+#options-collapsible-set{
+    margin-top: 0 !important;
+}
+#options-panel .ui-panel-inner{
+    padding-top: 0;
+}
+
+.about-image {
+    width: 100px;
+    height: 100px;
+    margin: 0 10px;
+}
+
+.small-mascot {
+    width: 150px;
+    height: 150px;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.center {
+    text-align: center;
+}
+
+/** jQM mods **/
+    .corner-noleft{
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .corner-noright{
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+/** stuff from HTML5BP **/
+::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+
