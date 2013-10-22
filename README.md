@@ -1,2 +1,4 @@
-Lexicon versió 131021
-===============
+Lexicon - Flashcard web app
+===========================
+
+
